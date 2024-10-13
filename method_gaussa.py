@@ -21,14 +21,22 @@ def forward_motion(extend_array: ndarray) -> ndarray:
 def reverse_motion(_array: ndarray) -> ndarray:
     """
     Обратный ход
+    Так как Xn нам известно (это Bn*n тан известен), я просто выражаю следующие x.
+    Но чтобы не идти снизу вверх, я переворачиваю матрицы A и B и иду сверху вниз.
     :param _array: верхне треугольная расширенная матрица
     :return: матрица X (решение)
     """
-    a_array = _array[:, :3]
-    b_array = _array[:, 3]
-    reverse_a_array = np.linalg.inv(a_array)  # обратная матрица
-    x_arr = np.dot(reverse_a_array, b_array)  # умножение матриц X = A^-1 * b
-    return np.array([x_arr])
+    # из расширенной матрицы выделяю матрицу A (все столбцы кроме последнего, который яв-ся матрицей B)
+    # и сразу разворачиваю столбцы и строки
+    a_array = _array[:, :-1][::-1, ::-1]
+    # для выделения матрицы B просто беру последний столбец и разворачиваю его
+    b_array = _array[:, -1][::-1]
+    x = []
+    for i in range(len(b_array)):
+        x.append(b_array[i])  # добавляю в матрицу X элемент матрицы B
+        for j in range(i):
+            x[i] -= a_array[i, j] * x[j]  # тут выражаю элемент x
+    return np.array([x[::-1]])  # кастую список X в numpy матрицу и разворачиваю так как до этого разворачивал A и B
 
 
 def print_array(_array: ndarray, col_names: list = None) -> None:
