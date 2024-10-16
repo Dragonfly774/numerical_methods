@@ -50,6 +50,13 @@ def main():
         [0, 0, 0, 2, 3.5],
     ], dtype=float)
     delts = [4.8, -1, 0.5, 6.1, 3]
+    _delts = np.array([
+        [4.8],
+        [-1],
+        [0.5],
+        [6.1],
+        [3],
+    ], dtype=float)
     size_array = array_A.shape[0]
     a = [0]  # элементы под диагональю
     b = []  # элементы диагонали
@@ -67,6 +74,7 @@ def main():
         y.append(float(array_A[k, k + 1]))
     p, q = forward_motion(a, b, y, delts, size_array)
     x_array = reverse_motion(p, q, size_array)
+    x_array = np.array([x_array])
 
     print('Матрица A')
     print_array(array_A)
@@ -84,7 +92,22 @@ def main():
     print('\nКоэффициенты прогонки Q')
     print_array(np.array([q]))
     print('\nОбратный ход')
-    print_array(np.array([x_array]))
+    print_array(x_array)
+
+    # Проверка
+    print('\nПроверка')
+    print('\nМатрица A умноженная на матрицу X должна ровняться матрице _delts')
+    ax_array = np.round(np.dot(array_A, np.transpose(x_array)), 1)
+    print('\nМатрица A на X')
+    print_array(ax_array)
+    print('\nМатрица _delts')
+    print_array(_delts)
+
+    if (ax_array == _delts).all():
+        print('\nРешение верное')
+    else:
+        print('\nРешение не верное')
+
 
 if __name__ == '__main__':
     main()

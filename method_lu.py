@@ -79,6 +79,20 @@ def main():
     print('\nОтвет: решенеи Ux = y (матрица X)')
     print_array(array_x)
 
+    # Проверка
+    print('\nПроверка')
+    print('\nМатрица L умноженная на матрицу U должна ровняться матрице A')
+    lu_array = np.dot(L, U)
+    print('\nМатрица LU')
+    print_array(lu_array)
+    print('\nМатрица A')
+    print_array(array_A)
+
+    if array_A.all() == lu_array.all():
+        print('\nРешение верное')
+    else:
+        print('\nРешение не верное')
+
 
 if __name__ == '__main__':
     main()

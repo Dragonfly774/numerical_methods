@@ -83,6 +83,20 @@ def main():
     print('\nОбратный ход')
     print_array(x_array, x_array_col_name)
 
+    # Проверка
+    print('\nПроверка')
+    print('\nМатрица A умноженная на матрицу X должна ровняться матрице B')
+    ax_array = np.dot(array_A, np.transpose(x_array))
+    print('\nМатрица A на X')
+    print_array(ax_array)
+    print('\nМатрица B')
+    print_array(array_b)
+
+    if (ax_array == array_b).all():
+        print('\nРешение верное')
+    else:
+        print('\nРешение не верное')
+
 
 if __name__ == '__main__':
     main()
